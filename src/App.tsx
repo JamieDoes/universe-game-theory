@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Container, Typography, Box, Alert, Snackbar } from '@mui/material';
+import { Analytics } from '@vercel/analytics/react';
 import { NaturalLanguageInputAI } from './components/NaturalLanguageInputAI';
 import { MatrixVisualizer } from './components/MatrixVisualizer';
 import { MatrixInterconnector } from './components/MatrixInterconnector';
@@ -81,6 +82,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+      <Analytics />
       <Container maxWidth="xl">
         <Box sx={{ py: 4 }}>
           <Typography variant="h3" component="h1" gutterBottom align="center">

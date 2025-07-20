@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Container, Typography, Box, Alert, Snackbar } from '@mui/material';
+import { CssBaseline, Container, Typography, Box, Alert, Snackbar, Paper, Button } from '@mui/material';
 import { Analytics } from '@vercel/analytics/react';
 import { NaturalLanguageInputAI } from './components/NaturalLanguageInputAI';
 import { MatrixVisualizer } from './components/MatrixVisualizer';
 import { MatrixInterconnector } from './components/MatrixInterconnector';
+import { MultiPlayerEvolution } from './components/MultiPlayerEvolution';
 import { Matrix } from './types/GameTheory';
 import { MatrixTransformations } from './utils/matrixTransformations';
 import { AIMatrixParser } from './utils/aiMatrixParser';
@@ -23,6 +24,7 @@ const darkTheme = createTheme({
 
 function App() {
   const [matrices, setMatrices] = useState<Matrix[]>([]);
+  const [showEvolution, setShowEvolution] = useState(false);
   const [alert, setAlert] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
     open: false,
     message: '',
@@ -95,6 +97,17 @@ function App() {
           <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
             <Box sx={{ flex: '1 1 300px', minWidth: 300, maxWidth: { xs: '100%', md: 400 } }}>
               <NaturalLanguageInputAI onSubmit={handleMatrixAdd} existingMatrices={matrices} />
+              
+              <Paper elevation={3} sx={{ p: 2, m: 2 }}>
+                <Button 
+                  variant="outlined" 
+                  fullWidth
+                  onClick={() => setShowEvolution(!showEvolution)}
+                >
+                  {showEvolution ? 'Hide' : 'Show'} Multi-Universe Evolution
+                </Button>
+              </Paper>
+              
               {matrices.length > 1 && (
                 <MatrixInterconnector 
                   matrices={matrices} 
@@ -105,7 +118,13 @@ function App() {
 
             <Box sx={{ flex: '2 1 500px', minWidth: 300 }}>
               <Box sx={{ maxHeight: '80vh', overflow: 'auto' }}>
-                {matrices.length === 0 ? (
+                {showEvolution ? (
+                  <MultiPlayerEvolution 
+                    numCivilizations={4}
+                    numUniverses={3}
+                    postScarcityGen={5}
+                  />
+                ) : matrices.length === 0 ? (
                   <Alert severity="info" sx={{ m: 2 }}>
                     No matrices created yet. Use the natural language input to create your first game matrix!
                   </Alert>

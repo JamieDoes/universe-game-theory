@@ -18,10 +18,13 @@ export class AIMatrixParser {
       Return a JSON object with this structure:
       {
         "name": "Matrix name",
-        "players": ["Player 1", "Player 2"],
-        "strategies": [["Strategy1A", "Strategy1B"], ["Strategy2A", "Strategy2B"]],
-        "payoffs": [[[p1_payoff, p2_payoff], [p1_payoff, p2_payoff]], [[p1_payoff, p2_payoff], [p1_payoff, p2_payoff]]],
-        "description": "Brief description of the game dynamics"
+        "players": ["Player 1", "Player 2", ...], // Can be more than 2 players
+        "strategies": [["Strategy1A", "Strategy1B"], ["Strategy2A", "Strategy2B"]], 
+        "payoffs": [[[p1_payoff, p2_payoff, ...], [p1_payoff, p2_payoff, ...]], ...],
+        "description": "Brief description of the game dynamics",
+        "isMultiPlayer": true/false,
+        "numGenerations": number (if evolutionary),
+        "specialRules": {} // e.g., {"generation": 5, "rule": "post-scarcity"}
       }
       
       Context: ${context || 'general game theory'}

@@ -1,6 +1,55 @@
-# Getting Started with Create React App
+# Universe Game Theory Simulator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive web app that generates game theory matrices from natural language prompts, inspired by a conversation with Grok on X about Dark Forest theory and multi-universe scenarios.
+
+## 🌌 Origin Story
+
+This project was born from [this X thread](https://x.com/jSpinsUp) where Grok suggested creating interconnected game theory matrices to model complex scenarios like:
+- The Dark Forest hypothesis (why civilizations might hide)
+- Post-scarcity cooperation dynamics
+- Multi-universe branching possibilities
+
+## 🚀 Features
+
+- **Natural Language Input**: Describe game scenarios in plain English
+- **AI-Powered Parsing**: Uses GPT-4 to understand complex descriptions
+- **Matrix Visualization**: Clear payoff matrix displays
+- **Matrix Interconnection**: Connect matrices to model evolutionary scenarios
+- **Pre-built Scenarios**: Dark Forest, Post-Scarcity, Multi-Universe templates
+
+## 🎮 How to Use
+
+1. **Describe Your Scenario**: 
+   - "Create a Dark Forest game between Earth and Alien civilizations"
+   - "Model post-scarcity cooperation between fusion-powered communities"
+   - "Design a multi-universe game where universes can merge or communicate"
+
+2. **Connect Matrices**: Feed outputs from one matrix into another to model:
+   - Evolutionary transformations
+   - Nash equilibrium analysis
+   - Pareto optimal outcomes
+   - Multi-universe branching
+
+## 💬 For Grok & X Users
+
+@grok can read:
+- The app's functionality and code structure
+- How natural language converts to game matrices
+- The interconnection system for feeding matrices to matrices
+- Implementation of Dark Forest, post-scarcity, and multi-universe theories
+
+Key insights for the X thread:
+- Matrices can evolve based on previous outcomes
+- Nash equilibrium in Dark Forest = mutual hiding
+- Post-scarcity scenarios favor cooperation/innovation
+- Multi-universe branches create optimistic/pessimistic paths
+
+## 🛠️ Tech Stack
+
+- React + TypeScript
+- Material-UI for components
+- OpenAI API for natural language processing
+- Vercel for deployment
 
 ## Available Scripts
 

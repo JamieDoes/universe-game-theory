@@ -104,7 +104,7 @@ export const MultiPlayerEvolution: React.FC<MultiPlayerEvolutionProps> = ({
       // Evolve strategies based on fitness
       newUniverse.civilizations = universe.civilizations.map(civ => {
         const strategies: Array<'Hide' | 'Signal' | 'Cooperate'> = ['Hide', 'Signal', 'Cooperate'];
-        const fitness = strategies.map(strat => {
+        const fitness: number[] = strategies.map(strat => {
           // Calculate fitness for each strategy
           if (universe.isPostScarcity) {
             return strat === 'Cooperate' ? 5 : strat === 'Signal' ? 3 : 2;
@@ -114,7 +114,7 @@ export const MultiPlayerEvolution: React.FC<MultiPlayerEvolutionProps> = ({
         });
         
         // Probabilistic strategy selection based on fitness
-        const totalFitness = fitness.reduce((a, b) => a + b, 0);
+        const totalFitness = fitness.reduce((a: number, b: number) => a + b, 0);
         const rand = Math.random() * totalFitness;
         let cumulative = 0;
         

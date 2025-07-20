@@ -6,10 +6,11 @@ import { MatrixParser } from '../utils/matrixParser';
 
 interface NaturalLanguageInputAIProps {
   onSubmit: (matrix: Matrix) => void;
+  onEvolutionScenario?: (params: any) => void;
   existingMatrices: Matrix[];
 }
 
-export const NaturalLanguageInputAI: React.FC<NaturalLanguageInputAIProps> = ({ onSubmit, existingMatrices }) => {
+export const NaturalLanguageInputAI: React.FC<NaturalLanguageInputAIProps> = ({ onSubmit, onEvolutionScenario, existingMatrices }) => {
   const [prompt, setPrompt] = useState('');
   const [context, setContext] = useState<'dark-forest' | 'post-scarcity' | 'multi-universe' | undefined>();
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ export const NaturalLanguageInputAI: React.FC<NaturalLanguageInputAIProps> = ({ 
   }, [existingMatrices, useAI]);
 
   const examples = [
+    'Evolve a multi-universe variant where 4 civilizations branch strategies across 3 parallel worlds, starting with Dark Forest payoffs. Factor in post-scarcity tech after gen 5.',
     'Create a Dark Forest game between Earth and Alien civilizations with strategies: Signal, Hide, Attack',
     'Model post-scarcity cooperation between communities with options: Share Resources, Innovate, Isolate',
     'Design a multi-universe game where universes can: Merge, Diverge, Communicate, Isolate',
@@ -37,15 +39,21 @@ export const NaturalLanguageInputAI: React.FC<NaturalLanguageInputAIProps> = ({ 
     setError(null);
 
     try {
-      let newMatrix: Matrix;
+      let result: Matrix | any;
       
       if (useAI && process.env.REACT_APP_OPENAI_API_KEY) {
-        newMatrix = await AIMatrixParser.parseWithAI(prompt, context);
+        result = await AIMatrixParser.parseWithAI(prompt, context);
       } else {
-        newMatrix = MatrixParser.parseNaturalLanguage(prompt);
+        result = MatrixParser.parseNaturalLanguage(prompt);
       }
       
-      onSubmit(newMatrix);
+      // Check if it's an evolution scenario
+      if (result.type === 'evolution' && onEvolutionScenario) {
+        onEvolutionScenario(result);
+      } else {
+        onSubmit(result as Matrix);
+      }
+      
       setPrompt('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse input');

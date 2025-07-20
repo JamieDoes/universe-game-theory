@@ -11,7 +11,63 @@ export class AIMatrixParser {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
   }
 
-  static async parseWithAI(prompt: string, context?: string): Promise<Matrix> {
+  static detectScenarioType(prompt: string): 'standard' | 'evolution' | 'multi-universe' {
+    const lowerPrompt = prompt.toLowerCase();
+    
+    if (lowerPrompt.includes('evolve') || lowerPrompt.includes('generation') || 
+        lowerPrompt.includes('multi-universe') || lowerPrompt.includes('parallel world') ||
+        lowerPrompt.includes('branch')) {
+      return 'evolution';
+    }
+    
+    return 'standard';
+  }
+
+  static parseEvolutionParameters(prompt: string): {
+    numCivilizations: number;
+    numUniverses: number;
+    postScarcityGen?: number;
+    generations?: number;
+  } {
+    const params = {
+      numCivilizations: 2,
+      numUniverses: 1,
+      postScarcityGen: undefined as number | undefined,
+      generations: 10
+    };
+    
+    // Extract number of civilizations
+    const civMatch = prompt.match(/(\d+)\s*civilizations?/i);
+    if (civMatch) params.numCivilizations = parseInt(civMatch[1]);
+    
+    // Extract number of universes/worlds
+    const universeMatch = prompt.match(/(\d+)\s*(?:parallel\s*)?(?:universe|world)s?/i);
+    if (universeMatch) params.numUniverses = parseInt(universeMatch[1]);
+    
+    // Extract post-scarcity generation
+    const postScarcityMatch = prompt.match(/post-scarcity.*?(?:after|at|gen|generation)\s*(\d+)/i);
+    if (postScarcityMatch) params.postScarcityGen = parseInt(postScarcityMatch[1]);
+    
+    // Extract total generations
+    const genMatch = prompt.match(/(\d+)\s*generations?/i);
+    if (genMatch) params.generations = parseInt(genMatch[1]);
+    
+    return params;
+  }
+
+  static async parseWithAI(prompt: string, context?: string): Promise<Matrix | any> {
+    // First check if this is an evolution scenario
+    const scenarioType = this.detectScenarioType(prompt);
+    
+    if (scenarioType === 'evolution') {
+      const evolutionParams = this.parseEvolutionParameters(prompt);
+      return {
+        type: 'evolution',
+        ...evolutionParams,
+        sourcePrompt: prompt
+      };
+    }
+    
     try {
       const systemPrompt = `You are a game theory expert. Parse natural language descriptions into game theory matrices.
       

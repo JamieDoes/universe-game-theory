@@ -25,6 +25,11 @@ const darkTheme = createTheme({
 function App() {
   const [matrices, setMatrices] = useState<Matrix[]>([]);
   const [showEvolution, setShowEvolution] = useState(false);
+  const [evolutionParams, setEvolutionParams] = useState({
+    numCivilizations: 4,
+    numUniverses: 3,
+    postScarcityGen: 5
+  });
   const [alert, setAlert] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
     open: false,
     message: '',
@@ -34,6 +39,20 @@ function App() {
   const handleMatrixAdd = (newMatrix: Matrix) => {
     setMatrices([...matrices, newMatrix]);
     setAlert({ open: true, message: 'Matrix created successfully!', severity: 'success' });
+  };
+
+  const handleEvolutionScenario = (params: any) => {
+    setEvolutionParams({
+      numCivilizations: params.numCivilizations || 4,
+      numUniverses: params.numUniverses || 3,
+      postScarcityGen: params.postScarcityGen || 5
+    });
+    setShowEvolution(true);
+    setAlert({ 
+      open: true, 
+      message: `Starting evolution: ${params.numCivilizations} civilizations × ${params.numUniverses} universes`, 
+      severity: 'success' 
+    });
   };
 
   const handleMatrixConnect = async (sourceId: string, _targetId: string, transformType: string) => {
@@ -96,7 +115,11 @@ function App() {
 
           <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
             <Box sx={{ flex: '1 1 300px', minWidth: 300, maxWidth: { xs: '100%', md: 400 } }}>
-              <NaturalLanguageInputAI onSubmit={handleMatrixAdd} existingMatrices={matrices} />
+              <NaturalLanguageInputAI 
+                onSubmit={handleMatrixAdd} 
+                onEvolutionScenario={handleEvolutionScenario}
+                existingMatrices={matrices} 
+              />
               
               <Paper elevation={3} sx={{ p: 2, m: 2 }}>
                 <Button 
@@ -120,9 +143,9 @@ function App() {
               <Box sx={{ maxHeight: '80vh', overflow: 'auto' }}>
                 {showEvolution ? (
                   <MultiPlayerEvolution 
-                    numCivilizations={4}
-                    numUniverses={3}
-                    postScarcityGen={5}
+                    numCivilizations={evolutionParams.numCivilizations}
+                    numUniverses={evolutionParams.numUniverses}
+                    postScarcityGen={evolutionParams.postScarcityGen}
                   />
                 ) : matrices.length === 0 ? (
                   <Alert severity="info" sx={{ m: 2 }}>
